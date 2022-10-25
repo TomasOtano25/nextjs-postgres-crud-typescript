@@ -1,5 +1,3 @@
-const index = () => {
-  return <div>hello word</div>;
-};
-
-export default index;
+export default function index() {
+  return <div>index</div>;
+}
