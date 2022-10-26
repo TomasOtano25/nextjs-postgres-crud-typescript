@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { Methods } from "../../../utils/enums/methods.enum";
 import { conn } from "../../../utils/database";
 
-type Task = {
+export type Task = {
   title: string;
   description: string;
 };
