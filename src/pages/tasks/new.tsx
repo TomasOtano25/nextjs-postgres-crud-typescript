@@ -1,4 +1,4 @@
-import { Card, Form, Button, Icon } from "semantic-ui-react";
+import { Card, Form, Button, Icon, Grid, Confirm } from "semantic-ui-react";
 import { ChangeEvent, useState, FormEvent, useEffect } from "react";
 import { useRouter } from "next/router";
 
@@ -10,6 +10,8 @@ export default function NewPage() {
     title: "",
     description: "",
   });
+
+  const [openConfirm, setOpenConfirm] = useState(false);
 
   const router = useRouter();
 
@@ -57,6 +59,17 @@ export default function NewPage() {
     }
   };
 
+  const handleDelete = async (id: string) => {
+    try {
+      await fetch("http://localhost:3000/api/tasks/" + id, {
+        method: "DELETE",
+      });
+      router.push("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const loadTask = async (id: string): Promise<Task> => {
     const res = await fetch("http://localhost:3000/api/tasks/" + id);
     const task = await res.json();
@@ -78,50 +91,79 @@ export default function NewPage() {
 
   return (
     <Layout>
-      <Card>
-        <Card.Content>
-          <Form onSubmit={handleSubmit}>
-            <Form.Field>
-              <label htmlFor="titles">Title:</label>
-              <input
-                type="text"
-                placeholder="Write your title"
-                name="title"
-                onChange={handleChange}
-                value={task.title}
-              />
-            </Form.Field>
+      <Button type="button" onClick={() => router.push("/")} color="violet">
+        <Icon name="arrow left" />
+        Back
+      </Button>
+      <Grid
+        centered
+        columns={2}
+        verticalAlign="middle"
+        style={{ height: "70%" }}
+      >
+        <Grid.Column>
+          <Card style={{ width: "100% " }}>
+            <Card.Content>
+              <Form onSubmit={handleSubmit}>
+                <Form.Field>
+                  <label htmlFor="titles">Title:</label>
+                  <input
+                    type="text"
+                    placeholder="Write your title"
+                    name="title"
+                    onChange={handleChange}
+                    value={task.title}
+                  />
+                </Form.Field>
 
-            <Form.Field>
-              <label htmlFor="titles">Title:</label>
-              <textarea
-                name="description"
-                rows={2}
-                placeholder="Write a description"
-                onChange={handleChange}
-                value={task.description}
-              ></textarea>
-            </Form.Field>
+                <Form.Field>
+                  <label htmlFor="titles">Title:</label>
+                  <textarea
+                    name="description"
+                    rows={2}
+                    placeholder="Write a description"
+                    onChange={handleChange}
+                    value={task.description}
+                  ></textarea>
+                </Form.Field>
 
-            {router.query.id ? (
-              <Button color="teal">
-                <Icon name="save" />
-                Update
-              </Button>
-            ) : (
-              <Button primary>
-                <Icon name="save" />
-                Save
-              </Button>
-            )}
+                {router.query.id ? (
+                  <Button color="teal">
+                    <Icon name="save" />
+                    Update
+                  </Button>
+                ) : (
+                  <Button primary>
+                    <Icon name="save" />
+                    Save
+                  </Button>
+                )}
 
-            <Button type="button" onClick={() => router.push("/")} color="red">
-              <Icon name="cancel" />
-              Cancel
-            </Button>
-          </Form>
-        </Card.Content>
-      </Card>
+                {router.query.id && (
+                  <Button
+                    type="button"
+                    onClick={() => setOpenConfirm(true)}
+                    color="red"
+                  >
+                    <Icon name="trash" />
+                    Delete
+                  </Button>
+                )}
+              </Form>
+            </Card.Content>
+          </Card>
+        </Grid.Column>
+      </Grid>
+
+      <Confirm
+        header="Delete a task"
+        content={`Are you sure you want to delete this task ${router.query.id}?`}
+        open={openConfirm}
+        onCancel={() => setOpenConfirm(false)}
+        onConfirm={() =>
+          typeof router.query.id === "string" && handleDelete(router.query.id)
+        }
+      />
     </Layout>
   );
 }
