@@ -1,6 +1,6 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { Methods } from "../../../utils/enums/methods.enum";
-import { conn } from "../../../utils/database";
+import { Methods } from "src/utils/enums/methods.enum";
+import { conn } from "src/utils/database";
 import { Task } from "./index";
 
 // eslint-disable-next-line import/no-anonymous-default-export
