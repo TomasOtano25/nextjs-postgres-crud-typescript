@@ -2,6 +2,7 @@ import { Card, Form, Button, Icon } from "semantic-ui-react";
 import { ChangeEvent, useState, FormEvent } from "react";
 import { useRouter } from "next/router";
 import { Task } from "src/types/Task";
+import Layout from "src/components/Layout";
 
 export default function NewPage() {
   const [task, setTask] = useState<Task>({
@@ -42,35 +43,37 @@ export default function NewPage() {
   };
 
   return (
-    <Card>
-      <Card.Content>
-        <Form onSubmit={handleSubmit}>
-          <Form.Field>
-            <label htmlFor="titles">Title:</label>
-            <input
-              type="text"
-              placeholder="Write your title"
-              name="title"
-              onChange={handleChange}
-            />
-          </Form.Field>
+    <Layout>
+      <Card>
+        <Card.Content>
+          <Form onSubmit={handleSubmit}>
+            <Form.Field>
+              <label htmlFor="titles">Title:</label>
+              <input
+                type="text"
+                placeholder="Write your title"
+                name="title"
+                onChange={handleChange}
+              />
+            </Form.Field>
 
-          <Form.Field>
-            <label htmlFor="titles">Title:</label>
-            <textarea
-              name="description"
-              rows={2}
-              placeholder="Write a description"
-              onChange={handleChange}
-            ></textarea>
-          </Form.Field>
+            <Form.Field>
+              <label htmlFor="titles">Title:</label>
+              <textarea
+                name="description"
+                rows={2}
+                placeholder="Write a description"
+                onChange={handleChange}
+              ></textarea>
+            </Form.Field>
 
-          <Button type="submit" primary={true}>
-            <Icon name="save" />
-            Save
-          </Button>
-        </Form>
-      </Card.Content>
-    </Card>
+            <Button type="submit" primary={true}>
+              <Icon name="save" />
+              Save
+            </Button>
+          </Form>
+        </Card.Content>
+      </Card>
+    </Layout>
   );
 }

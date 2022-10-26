@@ -2,6 +2,7 @@ import { Grid, Button } from "semantic-ui-react";
 import { useRouter } from "next/router";
 import { Task } from "src/types/Task";
 import TaskList from "src/components/task/TaskList";
+import Layout from "src/components/Layout";
 
 type Props = {
   tasks: Task[];
@@ -12,28 +13,30 @@ export default function Index({ tasks }: Props) {
 
   if (tasks.length === 0)
     return (
-      <Grid
-        columns={3}
-        centered
-        verticalAlign="middle"
-        style={{ height: "100vh" }}
-      >
-        <Grid.Row>
-          <Grid.Column width={9} textAlign="center">
-            <h1> No tasks yet</h1>
-            <Button primary={true} onClick={() => router.push("/tasks/new")}>
-              Create one task
-            </Button>
-          </Grid.Column>
-        </Grid.Row>
-      </Grid>
+      <Layout>
+        <Grid
+          columns={3}
+          centered
+          verticalAlign="middle"
+          style={{ height: "100vh" }}
+        >
+          <Grid.Row>
+            <Grid.Column width={9} textAlign="center">
+              <h1> No tasks yet</h1>
+              <Button primary={true} onClick={() => router.push("/tasks/new")}>
+                Create one task
+              </Button>
+            </Grid.Column>
+          </Grid.Row>
+        </Grid>
+      </Layout>
     );
 
   return (
-    <>
+    <Layout>
       <h1>Tasks</h1>
       <TaskList tasks={tasks} />
-    </>
+    </Layout>
   );
 }
 
