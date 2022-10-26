@@ -1,5 +1,6 @@
 import { Card, Form, Button, Icon } from "semantic-ui-react";
 import { ChangeEvent, useState, FormEvent } from "react";
+import { useRouter } from "next/router";
 import { Task } from "src/types/Task";
 
 export default function NewPage() {
@@ -7,6 +8,8 @@ export default function NewPage() {
     title: "",
     description: "",
   });
+
+  const router = useRouter();
 
   const handleChange = (
     event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -32,6 +35,7 @@ export default function NewPage() {
     event.preventDefault();
     try {
       await createTask(task);
+      router.push("/");
     } catch (error) {
       console.log(error);
     }
